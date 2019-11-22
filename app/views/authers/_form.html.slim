@@ -1,0 +1,27 @@
+= link_to '戻る', authers_path, class: 'btn btn-secondary mb-3'
+
+= form_with model: auther, url: url, method: method, local: true do |f|
+  - if auther.errors.any?
+    ul.alert.alert-danger
+      -   auther.errors.full_messages.each do |msg|
+        li= msg
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control'
+  .form-group
+    = f.label :sex
+    = f.select :sex, [:male, :female, :other].collect { |sex| [sex, sex] },
+                      { include_blank: '選択してください' }, class: 'form-control'
+  = f.fields_for :books do |book_f|
+    .row
+      = book_f.hidden_field :id
+      = book_f.hidden_field :auther_id
+      .form-group.col-6
+        = book_f.label :name
+        = book_f.text_field :name, class: 'form-control'
+      .form-group.col-6
+        = book_f.label :page
+        = book_f.number_field :page, class: 'form-control'
+
+
+  = f.submit '新規追加', class: 'btn btn-primary'

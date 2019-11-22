@@ -1,0 +1,31 @@
+h1 著者一覧
+
+= link_to '新規追加', new_auther_path, class: 'btn btn-primary mb-3'
+
+.col-6.offset-3
+  table.table.table-bordered
+    thead
+      tr.text-center
+        th 著者 
+        th 性別
+        th 編集
+    tbody
+      - @authers.each do |auther|
+        tr
+          td =auther.name
+          td =auther.sex
+          td.text-center
+            = link_to '編集', edit_auther_path(auther), class: 'btn btn-outline-primary'
+            = link_to '削除', auther_path(auther), method: :delete, class:'btn btn-outline-danger ml-3'
+        tr
+          td colspan=3
+            button.btn.btn-secondary.w-100 data-toggle='collapse' data-target="#collapse#{auther.id}" aria-expanded='false' aria-controls="collapse#{auther.id}"
+              | 著作一覧
+            .collapse id="collapse#{auther.id}"
+              .card.card-body
+                - if auther.books.any?
+                  ul
+                    - auther.books.each do |book|
+                      li= book.name
+                - else
+                  p #{auther.name}の著作はありません
